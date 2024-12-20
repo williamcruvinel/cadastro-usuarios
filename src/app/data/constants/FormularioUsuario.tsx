@@ -2,10 +2,11 @@ import InputTesto from "@/app/components/shared/InputTexto";
 import { Usuario } from "@/core/model/Usuario";
 
 export interface FormularioUsiarioProps {
-  usuario: Usuario
-  onChange: (usuario: Usuario) => void
+  usuario: Partial<Usuario>
+  onChange: (usuario: Partial<Usuario>) => void
   salvar: () => void
   cancelar: () => void
+  excluir: () => void
 }
 
 export default function FormularioUsiario(props: FormularioUsiarioProps){
@@ -26,9 +27,12 @@ export default function FormularioUsiario(props: FormularioUsiarioProps){
         value={props.usuario.senha}
         onChange={(e) => props.onChange?.({...props.usuario, senha: e.target.value})}
       />
-      <div className="flex gap-5">
-        <button className="bg-blue-500 px-4 py-2 rounded-md" onClick={props.salvar}>Salvar</button>
-        <button className="bg-zinc-500 px-4 py-2 rounded-md" onClick={props.cancelar}>Cancelar</button>
+      <div className="flex justify-between">
+        <div className="flex gap-5">
+          <button className="bg-blue-500 px-4 py-2 rounded-md" onClick={props.salvar}>Salvar</button>
+          <button className="bg-zinc-500 px-4 py-2 rounded-md" onClick={props.cancelar}>Cancelar</button>
+        </div>
+        <button className="bg-red-500 px-4 py-2 rounded-md" onClick={props.excluir}>Excluir</button>
       </div>
     </div>
   )

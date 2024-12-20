@@ -4,26 +4,37 @@ import Pagina from "@/app/components/templates/Pagina";
 import Titulo from "@/app/components/templates/Titulo";
 import ListaUsuario from "@/app/components/usuaio/ListaUsuario";
 import FormularioUsiario from "@/app/data/constants/FormularioUsuario";
-import usuarios from "@/app/data/constants/usuarios";
-import { Usuario } from "@/core/model/Usuario";
-import { IconUser } from "@tabler/icons-react";
-import { useState } from "react";
+import useUsuarios from "@/app/data/hooks/useUsuarios";
+import { IconPlus, IconUser } from "@tabler/icons-react";
+
 
 export default function Page(){
-  const [ usuario, setUsuario ] = useState<Usuario>(usuarios[0])
-  function salvar(){
-    //salvar no DB
-  }
+
+  const {usuarios, usuario, alterarUsuario, salvar, excluir, cancelar} = useUsuarios()
+
   return(
     <Pagina className="flex flex-col gap-5">
       <Titulo principal="Usuários:" secundario="Cadastro de usuários" icone={IconUser}/>
-      {/* <ListaUsuario/> */}
-      <FormularioUsiario 
-        usuario={usuario} 
-        onChange={setUsuario}
-        cancelar={() => {}}
-        salvar={() => {}}
-      />
+      
+      {usuario ? (
+        <FormularioUsiario 
+          usuario={usuario} 
+          onChange={alterarUsuario}
+          cancelar={() => alterarUsuario(null)}
+          salvar={salvar}
+          excluir={excluir}
+        />
+      ) : ( 
+      <>
+        <div className="flex justify-end">
+          <button className="flex items-center gap-2 bg-blue-500 px-4 py-2 rounded-md" onClick={() => alterarUsuario({})}>
+            <IconPlus />
+            <span>Novo Usúario</span>
+          </button>
+        </div>
+        <ListaUsuario usuarios={usuarios} onClick={alterarUsuario}/> 
+      </>
+      )}
     </Pagina>
   )
 }
